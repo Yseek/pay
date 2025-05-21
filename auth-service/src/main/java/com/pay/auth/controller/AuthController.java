@@ -2,6 +2,7 @@ package com.pay.auth.controller;
 
 import com.pay.auth.domain.User;
 import com.pay.auth.service.UserService;
+import com.pay.common.dto.LoginRequest;
 import com.pay.common.dto.SignupRequest;
 import com.pay.common.response.ApiResponse;
 import jakarta.validation.Valid;
@@ -23,5 +24,11 @@ public class AuthController {
     public ResponseEntity<ApiResponse<User>> signup(@Valid @RequestBody SignupRequest request) {
         User user = userService.signup(request);
         return ResponseEntity.ok(ApiResponse.success(user));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<String>> login(@Valid @RequestBody LoginRequest request) {
+        String token = userService.login(request);
+        return ResponseEntity.ok(ApiResponse.success(token));
     }
 }

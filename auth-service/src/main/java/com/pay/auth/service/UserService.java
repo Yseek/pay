@@ -2,6 +2,8 @@ package com.pay.auth.service;
 
 import com.pay.auth.domain.User;
 import com.pay.auth.repositroy.UserRepository;
+import com.pay.auth.util.JwtProvider;
+import com.pay.common.dto.LoginRequest;
 import com.pay.common.dto.SignupRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +15,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtProvider jwtProvider;
 
     public User signup(SignupRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
@@ -29,5 +32,16 @@ public class UserService {
                 .build();
 
         return userRepository.save(user);
+    }
+
+    public String login(LoginRequest request) {
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        return jwtProvider.createToken(user.getEmail());
     }
 }
