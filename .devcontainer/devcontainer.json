@@ -1,0 +1,27 @@
+{
+  "name": "pay-dev-env",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
+  },
+  "customizations": {
+    "intellij": {
+      "plugins": [
+        "com.intellij.java",
+        "org.jetbrains.plugins.gradle"
+      ]
+    },
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/opt/venv/bin/python"
+      }
+    }
+  },
+  "postCreateCommand": "bash .devcontainer/postCreateCommand.sh",
+  "forwardPorts": [8080, 9092, 6379, 5432],
+  "mounts": [
+    "source=${localEnv:USERPROFILE}\\.ssh,target=/root/.ssh,type=bind,consistency=cached",
+    "source=gradle-cache,target=/root/.gradle,type=volume"
+  ],
+  "remoteUser": "root"
+}
