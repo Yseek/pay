@@ -1,8 +1,7 @@
 rootProject.name = 'pay'
 
 include 'common-lib'
-//include 'api-gateway'
 include 'auth-service'
-//include 'user-service'
+include 'user-service'
 //include 'point-service'
 //include 'payment-service'
