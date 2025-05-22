@@ -26,3 +26,9 @@ ENV PATH="/opt/venv/bin:$PATH"
 # Install Python packages inside virtual environment
 RUN pip install --upgrade pip && \
     pip install fastapi uvicorn kafka-python scikit-learn
+
+# Install nginx
+RUN apt-get update && apt-get install -y nginx
+
+# Copy custom nginx config
+COPY ./nginx.conf /etc/nginx/nginx.conf

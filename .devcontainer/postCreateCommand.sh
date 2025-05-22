@@ -21,3 +21,5 @@ fi
 # GitHub SSH 호스트 등록
 mkdir -p ~/.ssh
 ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+service nginx start
