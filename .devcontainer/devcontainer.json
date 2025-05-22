@@ -8,7 +8,8 @@
     "intellij": {
       "plugins": [
         "com.intellij.java",
-        "org.jetbrains.plugins.gradle"
+        "org.jetbrains.plugins.gradle",
+        "com.codeium.intellij"
       ]
     },
     "vscode": {
