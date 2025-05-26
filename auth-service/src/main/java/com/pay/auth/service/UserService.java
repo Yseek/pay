@@ -1,10 +1,12 @@
 package com.pay.auth.service;
 
 import com.pay.auth.domain.User;
+import com.pay.auth.event.UserSignupProducer;
 import com.pay.auth.repositroy.UserRepository;
 import com.pay.auth.util.JwtProvider;
 import com.pay.common.dto.LoginRequest;
 import com.pay.common.dto.SignupRequest;
+import com.pay.common.event.UserCreatedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
+    private final UserSignupProducer userSignupProducer;
 
     public User signup(SignupRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
@@ -30,6 +33,13 @@ public class UserService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .nickname(request.getNickname())
                 .build();
+
+        UserCreatedEvent event = UserCreatedEvent.builder()
+                .email(user.getEmail())
+                .nickname(user.getNickname())
+                .build();
+
+        userSignupProducer.send(event);
 
         return userRepository.save(user);
     }
