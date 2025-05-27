@@ -2,8 +2,8 @@ package com.pay.auth.controller;
 
 import com.pay.auth.domain.User;
 import com.pay.auth.service.UserService;
-import com.pay.common.dto.LoginRequest;
-import com.pay.common.dto.SignupRequest;
+import com.pay.auth.dto.LoginRequest;
+import com.pay.auth.dto.SignupRequest;
 import com.pay.common.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
