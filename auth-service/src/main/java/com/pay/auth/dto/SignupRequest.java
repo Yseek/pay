@@ -1,15 +1,17 @@
-package com.pay.common.dto;
+package com.pay.auth.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class LoginRequest {
+public class SignupRequest {
 
     @Email
     @NotBlank
@@ -17,4 +19,7 @@ public class LoginRequest {
 
     @NotBlank
     private String password;
+
+    @NotBlank
+    private String nickname;
 }
