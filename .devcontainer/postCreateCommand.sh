@@ -22,4 +22,4 @@ fi
 mkdir -p ~/.ssh
 ssh-keyscan github.com >> ~/.ssh/known_hosts
 
-service nginx start
+nginx
