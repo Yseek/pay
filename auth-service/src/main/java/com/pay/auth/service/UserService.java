@@ -1,11 +1,11 @@
 package com.pay.auth.service;
 
+import com.pay.common.jwt.JwtProvider;
 import com.pay.auth.domain.User;
-import com.pay.auth.event.UserSignupProducer;
-import com.pay.auth.repositroy.UserRepository;
-import com.pay.auth.util.JwtProvider;
 import com.pay.auth.dto.LoginRequest;
 import com.pay.auth.dto.SignupRequest;
+import com.pay.auth.event.UserSignupProducer;
+import com.pay.auth.repositroy.UserRepository;
 import com.pay.common.event.UserCreatedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

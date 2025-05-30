@@ -1,4 +1,4 @@
-package com.pay.auth.util;
+package com.pay.common.jwt;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
