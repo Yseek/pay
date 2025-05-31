@@ -1,6 +1,12 @@
 plugins {
     id 'org.springframework.boot'
     id 'java'
+    id 'com.google.protobuf' version '0.9.4'
+}
+
+ext {
+    protobufVersion = '4.27.2'
+    grpcVersion = '1.65.1'
 }
 
 dependencies {
@@ -22,7 +28,35 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
 
     implementation 'org.springframework.kafka:spring-kafka'
+
+    // gRPC
+    implementation "com.google.protobuf:protobuf-java-util:${protobufVersion}"
+    implementation "com.google.protobuf:protobuf-java:${protobufVersion}"
+    implementation "io.grpc:grpc-netty-shaded:${grpcVersion}"
+    implementation "io.grpc:grpc-protobuf:${grpcVersion}"
+    implementation "io.grpc:grpc-stub:${grpcVersion}"
+    implementation 'net.devh:grpc-spring-boot-starter:3.1.0.RELEASE'
+    compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
 }
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:${protobufVersion}"
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.plugins {
+                grpc {}
+            }
+        }
+    }
+}
+
 
 tasks.named('test') {
     useJUnitPlatform()
