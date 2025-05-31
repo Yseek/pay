@@ -3,32 +3,34 @@
 AI 기반 결제 사기 탐지 시스템을 포함한 **결제 백엔드**를 직접 구현하는 프로젝트입니다.
 
 > ⚠️ **현재 열심히 개발 중입니다.**  
-> 코드가 빠르게 바뀌고 있으며, 구현되지 않은 기능도 있습니다.  
+> 코드가 빠르게 바뀌고 있으며, 구현되지 않은 기능도 있습니다.
 
-## 🔍 목표
+## 🎯 프로젝트 목표
 
-- 실제 운영을 염두에 둔 **결제 시스템 아키텍처** 설계
+- 실제 운영을 염두에 둔 **결제 시스템 아키텍처 설계**
 - **AI 기반 사기 탐지 로직**을 백엔드에 통합
-- 확장성과 보안성을 고려한 설계 및 구현
-
-## 🛠️ 사용 기술
-
-- **Java 21**, **Spring Boot 3.2.5**
-- **MSA 아키텍처**, **Apache Kafka**
-- **MySQL**, **JPA (Hibernate)**
-- **JWT 기반 인증/인가**
-- **Docker**, **DevContainer**
+- **확장성**, **보안성**, **모듈화**를 고려한 백엔드 설계 및 구현
 
 
-## 🤝 기여 & 피드백
+## 🛠️ 사용 기술 스택
 
-이 프로젝트는 계속 발전 중입니다.  
-아이디어, 피드백, 혹은 코드 제안 모두 환영합니다!
+| 분류 | 기술 |
+|------|------|
+| Language | Java 21 |
+| Framework | Spring Boot 3.2.5, Spring Security |
+| 아키텍처 | MSA (Microservice Architecture) |
+| 메시징 | Apache Kafka |
+| 데이터베이스 | MySQL + JPA (Hibernate) |
+| 인증/인가 | JWT (Access/Refresh Token) |
+| 통신 방식 | REST + gRPC 혼합 구조 |
+| 인프라 | Docker, DevContainer |
 
-## 🔄 Kafka 흐름 요약
 
-```
-auth-service      ---> Kafka ("user.signup") ---> user-service (UserProfile 저장)
-                                                     ↘
-                                                      └---> point-service (가입 축하 포인트 지급)
-```
+## 🔁 서비스 간 통신 구조
+
+### 📦 Auth → User, Point 연동 흐름
+
+```plaintext
+auth-service
+    ├─> gRPC 호출 ─────────────> user-service (회원 정보 저장)
+    └─> Kafka 메시지 (user.signup) ──> point-service (가입 축하 포인트 지급)
