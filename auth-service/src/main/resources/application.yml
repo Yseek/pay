@@ -30,3 +30,12 @@ logging:
     org:
       springframework:
         web: DEBUG
+
+grpc:
+  client:
+    user-profile:
+      address: static://localhost:9100
+      negotiationType: plaintext
+  server:
+    port: 9101
+
