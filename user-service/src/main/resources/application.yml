@@ -36,5 +36,9 @@ logging:
         web: DEBUG
 
 grpc:
+  client:
+    auth-service:
+      address: static://localhost:9101
+      negotiationType: plaintext
   server:
     port: 9100

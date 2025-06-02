@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,4 +29,12 @@ public class UserController {
         UserProfileResponse profile = userService.getProfile(email);
         return ResponseEntity.ok(ApiResponse.success(profile));
     }
+
+    @DeleteMapping("/me")
+    public ResponseEntity<ApiResponse<Void>> deleteMe(Authentication authentication) {
+        String email = (String) authentication.getPrincipal();
+        userService.deleteUser(email);
+        return ResponseEntity.ok(ApiResponse.success(null));
+    }
+
 }

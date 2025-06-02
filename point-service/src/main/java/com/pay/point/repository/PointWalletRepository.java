@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface PointWalletRepository extends JpaRepository<PointWallet, Integer> {
     Optional<PointWallet> findByEmail(String email);
-
+    void deleteByEmail(String email);
 }

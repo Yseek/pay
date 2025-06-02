@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.pay.auth.grpc";
+option java_outer_classname = "AuthUserProto";
+
+service AuthUserService {
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
+}
+
+message DeleteUserRequest {
+  string email = 1;
+}
+
+message DeleteUserResponse {}
