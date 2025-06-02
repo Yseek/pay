@@ -1,5 +1,8 @@
 package com.pay.auth.grpc;
 
+import com.pay.user.grpc.CreateProfileRequest;
+import com.pay.user.grpc.CreateProfileResponse;
+import com.pay.user.grpc.UserProfileServiceGrpc;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Component;
 

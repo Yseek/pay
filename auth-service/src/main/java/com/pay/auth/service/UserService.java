@@ -9,10 +9,12 @@ import com.pay.auth.repositroy.UserRepository;
 import com.pay.common.event.UserCreatedEvent;
 import com.pay.common.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -42,7 +44,8 @@ public class UserService {
 
         // ✅ gRPC 호출 실패 시 예외 던져서 트랜잭션 전체 롤백
         try {
-            userProfileGrpcClient.createProfile(user.getEmail(), user.getNickname());
+            String profile = userProfileGrpcClient.createProfile(user.getEmail(), user.getNickname());
+            log.info("profile gRPC 리턴 확인 : {}", profile);
         } catch (Exception e) {
             throw new RuntimeException("UserProfile 생성 실패");
         }
