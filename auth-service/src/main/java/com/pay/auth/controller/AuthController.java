@@ -1,6 +1,7 @@
 package com.pay.auth.controller;
 
 import com.pay.auth.domain.User;
+import com.pay.auth.dto.TokenResponse;
 import com.pay.auth.service.UserService;
 import com.pay.auth.dto.LoginRequest;
 import com.pay.auth.dto.SignupRequest;
@@ -27,8 +28,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<String>> login(@Valid @RequestBody LoginRequest request) {
-        String token = userService.login(request);
+    public ResponseEntity<ApiResponse<TokenResponse>> login(@Valid @RequestBody LoginRequest request) {
+        TokenResponse token = userService.login(request);
         return ResponseEntity.ok(ApiResponse.success(token));
     }
+
+    // TODO: Refresh 토큰을 이용해 재발급 추가
 }

@@ -3,6 +3,7 @@ package com.pay.auth.service;
 import com.pay.auth.domain.User;
 import com.pay.auth.dto.LoginRequest;
 import com.pay.auth.dto.SignupRequest;
+import com.pay.auth.dto.TokenResponse;
 import com.pay.auth.event.UserSignupProducer;
 import com.pay.auth.grpc.UserProfileGrpcClient;
 import com.pay.auth.repositroy.UserRepository;
@@ -24,6 +25,7 @@ public class UserService {
     private final JwtProvider jwtProvider;
     private final UserSignupProducer userSignupProducer;
     private final UserProfileGrpcClient userProfileGrpcClient;
+    private final RefreshTokenService refreshTokenService;
 
     @Transactional
     public User signup(SignupRequest request) {
@@ -60,14 +62,24 @@ public class UserService {
         return user;
     }
 
-    public String login(LoginRequest request) {
-        User user = userRepository.findByEmail(request.getEmail())
+    public TokenResponse login(LoginRequest request) {
+        String email = request.getEmail();
+
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        return jwtProvider.createToken(user.getEmail());
+        String accessToken = jwtProvider.createToken(user.getEmail());
+        String refreshToken = jwtProvider.createRefreshToken(user.getEmail());
+
+        refreshTokenService.save(email, refreshToken);
+
+        return new TokenResponse(
+                accessToken,
+                refreshToken
+        );
     }
 }
