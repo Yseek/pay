@@ -9,6 +9,7 @@ import com.pay.auth.grpc.UserProfileGrpcClient;
 import com.pay.auth.repositroy.UserRepository;
 import com.pay.common.event.UserCreatedEvent;
 import com.pay.common.jwt.JwtProvider;
+import com.pay.common.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,6 +27,7 @@ public class UserService {
     private final UserSignupProducer userSignupProducer;
     private final UserProfileGrpcClient userProfileGrpcClient;
     private final RefreshTokenService refreshTokenService;
+    private final JwtUtil jwtUtil;
 
     @Transactional
     public User signup(SignupRequest request) {
@@ -80,6 +82,30 @@ public class UserService {
         return new TokenResponse(
                 accessToken,
                 refreshToken
+        );
+    }
+
+    public TokenResponse reissue(String refreshToken) {
+        if (!jwtUtil.validate(refreshToken)) {
+            throw new IllegalArgumentException("유효하지 않은 refresh 토큰입니다.");
+        }
+
+        String email = jwtUtil.extractEmail(refreshToken);
+        log.info("refresh Email : {}", email);
+
+        String savedRefreshToken = refreshTokenService.get(email);
+        if (savedRefreshToken == null || !savedRefreshToken.equals(refreshToken)) {
+            throw new IllegalArgumentException("일치하지 않는 refresh 토큰이빈다.");
+        }
+
+        String newAccessToken = jwtProvider.createToken(email);
+        String newRefreshToken = jwtProvider.createRefreshToken(email);
+
+        refreshTokenService.save(email, newRefreshToken);
+
+        return new TokenResponse(
+                newAccessToken,
+                newRefreshToken
         );
     }
 }

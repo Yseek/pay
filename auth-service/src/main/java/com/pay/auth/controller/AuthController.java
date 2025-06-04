@@ -1,6 +1,7 @@
 package com.pay.auth.controller;
 
 import com.pay.auth.domain.User;
+import com.pay.auth.dto.TokenReissueRequest;
 import com.pay.auth.dto.TokenResponse;
 import com.pay.auth.service.UserService;
 import com.pay.auth.dto.LoginRequest;
@@ -33,5 +34,9 @@ public class AuthController {
         return ResponseEntity.ok(ApiResponse.success(token));
     }
 
-    // TODO: Refresh 토큰을 이용해 재발급 추가
+    @PostMapping("/reissue")
+    public ResponseEntity<ApiResponse<TokenResponse>> reissue(@Valid @RequestBody TokenReissueRequest request) {
+        TokenResponse token = userService.reissue(request.refreshToken());
+        return ResponseEntity.ok(ApiResponse.success(token));
+    }
 }
