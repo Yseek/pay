@@ -1,6 +1,6 @@
 package com.pay.point.controller;
 
-import com.pay.common.response.ApiResponse;
+import com.pay.common.response.CommonResponse;
 import com.pay.point.dto.PointWalletResponse;
 import com.pay.point.service.PointService;
 import lombok.RequiredArgsConstructor;
@@ -17,14 +17,14 @@ public class PointController {
     private final PointService pointService;
 
     @GetMapping("/wallet")
-    public ResponseEntity<ApiResponse<PointWalletResponse>> getPointWallet(Authentication authentication) {
+    public ResponseEntity<CommonResponse<PointWalletResponse>> getPointWallet(Authentication authentication) {
         String email = (String) authentication.getPrincipal();
         if (email == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(ApiResponse.error("인증되지 않은 요청입니다."));
+                    .body(CommonResponse.error("인증되지 않은 요청입니다."));
         }
 
         PointWalletResponse wallet = pointService.getPointWallet(email);
-        return ResponseEntity.ok(ApiResponse.success(wallet));
+        return ResponseEntity.ok(CommonResponse.success(wallet));
     }
 }

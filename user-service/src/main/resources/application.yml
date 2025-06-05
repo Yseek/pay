@@ -42,3 +42,15 @@ grpc:
       negotiationType: plaintext
   server:
     port: 9100
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+    doc-expansion: none
+    disable-swagger-default-url: true
+  show-actuator: true
+  packages-to-scan: com.pay.user.controller
