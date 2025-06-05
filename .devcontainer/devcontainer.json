@@ -12,6 +12,6 @@
     }
   },
   "postCreateCommand": "bash .devcontainer/postCreateCommand.sh",
-  "forwardPorts": [80, 8081, 8082, 8083, 9092, 9100, 9101],
+  "forwardPorts": [80, 8081, 8082, 8083, 8084, 9092, 9100, 9101],
   "remoteUser": "root"
 }
