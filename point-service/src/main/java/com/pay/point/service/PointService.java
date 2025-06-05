@@ -1,5 +1,6 @@
 package com.pay.point.service;
 
+import com.pay.common.event.PaymentEvent;
 import com.pay.point.domain.PointWallet;
 import com.pay.point.dto.PointWalletResponse;
 import com.pay.point.repository.PointWalletRepository;
@@ -19,5 +20,17 @@ public class PointService {
         return new PointWalletResponse(
                 wallet.getBalance()
         );
+    }
+
+    public void decreasePoint(PaymentEvent event) {
+        PointWallet wallet = pointWalletRepository.findByEmail(event.getEmail())
+                .orElseThrow(() -> new RuntimeException("지갑이 없습니다."));
+
+        if (wallet.getBalance() < event.getAmount()) {
+            throw new RuntimeException("포인트 부족");
+        }
+
+        wallet.setBalance(wallet.getBalance() - event.getAmount());
+        pointWalletRepository.save(wallet);
     }
 }

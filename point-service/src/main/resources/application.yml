@@ -34,3 +34,6 @@ logging:
     org:
       springframework:
         web: DEBUG
+grpc:
+  server:
+    port: 9102
